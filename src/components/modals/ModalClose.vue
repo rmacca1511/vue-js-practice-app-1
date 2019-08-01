@@ -10,7 +10,6 @@ export default {
   props: ['type'],
   methods: {
     closeModal(type) {
-      console.log(type);
       this.$root.$emit('closeModal', type);
     },
   },

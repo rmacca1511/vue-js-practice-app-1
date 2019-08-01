@@ -1,7 +1,7 @@
 <template>
   <div class="airport-field">
       <label class="airport-field__label">From:</label>
-      <input type="text" class="airport-field__input"
+      <input class="airport-field__input" type="text"
       @click="openModal('airport')"
       placeholder="Please Select an Airport..." />
   </div>

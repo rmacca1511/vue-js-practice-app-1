@@ -8,20 +8,8 @@
         Clear All Selections
       </span>
     </div>
-    <div v-for="(airport, index) in ukAirports" :key="index">
-      <div class="airport-card" @click="cardClicked($event)" :data-id="airport.code">
-        <input class="airport-card__checkbox" type="checkbox" :data-id="airport.code"
-        @change="inputChecked()" />
-        <div class="airport-card__code">
-          Code: {{ airport.code }}
-        </div>
-        <div class="airport-card__name">
-          Name: {{ airport.name }}
-        </div>
-        <div class="airport-card__loc">
-          Location: {{ airport.location }}
-        </div>
-      </div>
+    <div class="airport-modal__cards" v-for="(airport, index) in ukAirports" :key="index">
+      <AirportItem :airport=airport />
     </div>
     <div class="airport-modal-footer">
       <button class="airport-modal-footer__button airport-modal-footer__button--done"
@@ -37,8 +25,11 @@
 </template>
 
 <script>
+import AirportItem from './AirportItem.vue';
+
 export default {
   name: 'AirportModalContent',
+  components: { AirportItem },
   props: ['type'],
   computed: {
     isValidationShown() {
@@ -72,7 +63,6 @@ export default {
   methods: {
     clearAll() {
       const checks = document.getElementsByClassName('airport-card__checkbox');
-
       for (let i = 0; i < checks.length; i += 1) {
         if (checks[i].checked === true) {
           checks[i].checked = false;
@@ -82,6 +72,10 @@ export default {
       this.checkedUkAirports = [];
       this.inputChecked();
     },
+    closeModal(type) {
+      this.clearAll();
+      this.$root.$emit('closeModal', type);
+    },
     doneClicked() {
       if (Object.keys(this.checkedUkAirports).length > 0) {
         this.isValid = true;
@@ -89,15 +83,10 @@ export default {
         this.isValid = false;
       }
       this.validate();
-
       //  Ready to run search
       if (this.isValid) {
         this.runSearch();
       }
-    },
-    closeModal(type) {
-      this.clearAll();
-      this.$root.$emit('closeModal', type);
     },
     cardClicked(event) {
       const checks = document.getElementsByClassName('airport-card__checkbox');
@@ -135,7 +124,6 @@ export default {
       this.checkedUkAirports = newCheckedAirportArray;
     },
     runSearch() {
-      console.log('gonna search');
       console.log(this.checkedUkAirports);
     },
     validate() {
@@ -170,34 +158,6 @@ export default {
       &:hover {
         color: #aaa;
       }
-    }
-  }
-
-  .airport-card {
-    display: flex;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0px;
-    cursor: pointer;
-
-    &:hover, &--selected {
-      background: #ccc;
-    }
-
-    &__checkbox {
-      visibility: hidden;
-    }
-
-    &__code {
-      flex: 1;
-    }
-    &__name {
-      flex: 1;
-    }
-    &__loc {
-      flex: 1;
     }
   }
 

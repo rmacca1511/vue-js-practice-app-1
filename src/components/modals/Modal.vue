@@ -6,16 +6,18 @@
         <div>This is a generic standard modal</div>
       </slot>
     </div>
+    <ModalFooter :type=type />
   </div>
 </template>
 
 <script>
 import ModalHeader from './ModalHeader.vue';
+import ModalFooter from './ModalFooter.vue';
 
 export default {
   name: 'Modal',
   props: ['type'],
-  components: { ModalHeader },
+  components: { ModalHeader, ModalFooter },
   data() {
     return {
       modalShown: false,
@@ -109,13 +111,18 @@ export default {
 <style lang="scss">
 .modal {
   position: fixed;
-  width: 80%;
   height: auto;
   background: white;
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   z-index: 1;
+
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    width: 80%;
+  }
 
   &--hidden {
     display: none;
@@ -155,13 +162,35 @@ export default {
   }
 
   &__button {
+    flex: 1;
+    max-width: 250px;
+    margin: 10px 20px;
     appearance: none;
-    border: none;
-    background-color: transparent;
-    color: white;
+    border: #eee;
+    border-radius: 4px;
+    padding: 10px;
     font-size: 24px;
+    font-size: italic;
+    font-weight: 700;
     cursor: pointer;
-    outline: none;
+
+    &:hover {
+      background: #efefef;
+    }
+
+    &--done {
+      margin-left: 0px;
+      background: #ff3838;
+      color: white;
+
+      &:hover {
+        background: rgba(255, 56, 56, 0.65);
+      }
+    }
+
+    &--cancel {
+      align-items: flex-end;
+    }
   }
 
   &__sidebar {
@@ -184,7 +213,11 @@ export default {
 
 .airport-modal {
   z-index: 1001;
-  width: 50%;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+  }
 
   &--shown {
     display: block;
@@ -193,7 +226,11 @@ export default {
 
 .date-modal {
   z-index: 1001;
-  width: 50%;
+  width: 100%;
+
+  @media screen and (min-width: 768px) {
+    width: 50%;
+  }
 
   &--shown {
     display: block;
